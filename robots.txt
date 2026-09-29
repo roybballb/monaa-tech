@@ -1,0 +1,7 @@
+# MONAA Systems & Research - Robots.txt
+# Entity Authority: https://monaa.tech/
+User-agent: *
+Allow: /
+
+# Canonical Sitemaps
+Sitemap: https://monaa.tech/sitemap.xml
