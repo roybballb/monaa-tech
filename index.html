@@ -543,6 +543,219 @@
     .footer-col ul li a:hover {
       color: var(--text);
     }
+
+    /* MONAA Compliance & Legal Modal */
+    .monaa-legal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(3, 7, 18, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 100000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 1;
+      transition: opacity 0.25s ease;
+    }
+
+    .monaa-legal-modal {
+      background: rgba(10, 15, 30, 0.96);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      border-radius: 16px;
+      box-shadow: 0 25px 80px rgba(0, 240, 255, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      max-width: 860px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      color: #f8fafc;
+      font-family: 'Inter', sans-serif;
+      animation: monaaModalSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes monaaModalSlide {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .monaa-legal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(15, 23, 42, 0.5);
+    }
+
+    .monaa-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #38bdf8;
+      letter-spacing: 0.06em;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulseAnim 2s infinite;
+    }
+
+    @keyframes pulseAnim {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .monaa-modal-close {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .monaa-modal-close:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .monaa-legal-body {
+      padding: 24px;
+    }
+
+    .monaa-legal-body h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .monaa-legal-lead {
+      font-size: 13.5px;
+      color: #94a3b8;
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+
+    .monaa-legal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+    }
+
+    .monaa-legal-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 18px 16px;
+      transition: border-color 0.2s ease;
+    }
+
+    .monaa-legal-card:hover {
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+
+    .monaa-legal-card .card-icon {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .monaa-legal-card h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #38bdf8;
+      margin-bottom: 8px;
+    }
+
+    .monaa-legal-card p {
+      font-size: 12px;
+      line-height: 1.55;
+      color: #cbd5e1;
+    }
+
+    .monaa-legal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(15, 23, 42, 0.5);
+      flex-wrap: wrap;
+    }
+
+    .monaa-btn-outline {
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      background: transparent;
+      padding: 10px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .monaa-btn-outline:hover {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: #38bdf8;
+    }
+
+    .monaa-btn-primary {
+      background: linear-gradient(135deg, #00f0ff, #0284c7);
+      color: #030712;
+      font-weight: 700;
+      padding: 11px 24px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 13.5px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(0, 240, 255, 0.25);
+    }
+
+    .monaa-btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 240, 255, 0.35);
+    }
+
+    @media (max-width: 640px) {
+      .monaa-legal-grid {
+        grid-template-columns: 1fr;
+      }
+      .monaa-legal-footer {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .monaa-btn-outline, .monaa-btn-primary {
+        text-align: center;
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -775,7 +988,7 @@
             Institutional Algorithmic Trading, Quantitative Market Microstructure, Generative AI Reasoning &amp; Sovereign Web Security Systems.
           </p>
           <p style="font-size: 12px; margin-top: 12px; color: #64748b;">
-            Lead Inventor: <strong>Aniruddha Roy</strong> | Systems Co-Architect: <strong>Rajashree Ghosh</strong>
+            Entity: <strong>MONAA™ Systems &amp; Research</strong> // Sovereign Infrastructure &amp; Intellectual Property Custodian
           </p>
         </div>
         <div class="footer-col">
@@ -788,19 +1001,122 @@
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Commercial Desk</h4>
+          <h4>Commercial &amp; Legal</h4>
           <ul>
-            <li><a href="mailto:roybballb@gmail.com">roybballb@gmail.com</a></li>
-            <li><a href="https://monaasystemsresearch.gumroad.com/l/monaa-ofir">Institutional Licensing</a></li>
-            <li><a href="https://monaasystemsresearch.gumroad.com/l/how-ai-detectors-work">Free Whitepaper</a></li>
+            <li><a href="mailto:roybballb@gmail.com">Commercial Desk</a></li>
+            <li><a href="legal.html">Master Legal Notice &amp; Charter</a></li>
+            <li><a href="legal.html#liability">Limitation of Liability</a></li>
+            <li><a href="#" id="open-legal-modal" style="color: #38bdf8; font-weight: 600;">⚖️ View Compliance Notice</a></li>
           </ul>
         </div>
       </div>
-      <div style="text-align: center; font-size: 12px; color: #475569; padding-top: 20px; border-top: 1px solid var(--card-border);">
-        &copy; 2026 MONAA™ Systems &amp; Research Labs. All rights reserved. Registered intellectual property and proprietary algorithms.
+      <div style="text-align: center; font-size: 12px; color: #475569; padding-top: 20px; border-top: 1px solid var(--card-border); line-height: 1.6;">
+        &copy; 2026 MONAA™ Systems &amp; Research Labs. All rights reserved. Registered intellectual property and proprietary algorithms.<br>
+        <span style="color: #64748b; font-size: 11px;">⚠️ Legal Notice: Any software run by any user makes it the user's sole liability for any issues, consequences, and losses. MONAA™ provides deterministic research engines without warranty of any kind.</span>
       </div>
     </div>
   </footer>
 
+  <!-- MONAA™ Compliance & Legal Notice Modal -->
+  <div id="monaa-legal-backdrop" class="monaa-legal-backdrop" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="monaa-legal-title">
+    <div class="monaa-legal-modal">
+      <div class="monaa-legal-header">
+        <div class="monaa-badge-pill">
+          <span class="pulse-dot"></span> SOVEREIGN COMPUTATIONAL ARCHITECTURE // LEGAL COMPLIANCE CHARTER
+        </div>
+        <button id="monaa-legal-close" class="monaa-modal-close" aria-label="Close Notice">&times;</button>
+      </div>
+      <div class="monaa-legal-body">
+        <h3 id="monaa-legal-title">MONAA™ Systems &amp; Research: Compliance Notice &amp; Terms of Access</h3>
+        <p class="monaa-legal-lead">
+          All sovereign execution kernels, internal weights, mathematical AST transformers, and research specifications are distributed strictly under the following institutional legal covenants:
+        </p>
+        <div class="monaa-legal-grid">
+          <div class="monaa-legal-card">
+            <div class="card-icon">⚡</div>
+            <h4>1. Local &amp; Air-Gapped Execution</h4>
+            <p>Software execution occurs strictly within the user’s local, client-side, air-gapped computational infrastructure. MONAA maintains zero telemetry, zero cloud logging, and zero operational custody.</p>
+          </div>
+          <div class="monaa-legal-card">
+            <div class="card-icon">🛡️</div>
+            <h4>2. Software Liability &amp; Non-Advisory Shield</h4>
+            <p>All materials are provided "AS IS" without warranties of any kind. MONAA disclaims all liability for operational failures, market microstructure losses, trading slippage, or academic integrity flags. Does not constitute legal, financial, or investment advice. Aggregate liability is strictly capped at $100.00 USD.</p>
+          </div>
+          <div class="monaa-legal-card">
+            <div class="card-icon">🔒</div>
+            <h4>3. Authorized Testing &amp; Academic Warranty</h4>
+            <p>Users warrant that any edge WAF evaluation, TLS fingerprint simulation, or cellular proxy rotation is conducted solely on infrastructure owned or authorized in writing by the asset custodian. All text transformations must strictly comply with institutional honor codes.</p>
+          </div>
+        </div>
+      </div>
+      <div class="monaa-legal-footer">
+        <a href="legal.html" class="monaa-btn-outline" target="_blank">Read Master Legal Charter (Full Terms) &rarr;</a>
+        <button id="monaa-legal-acknowledge" class="monaa-btn-primary">Acknowledge &amp; Enter Portal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compliance Modal Controller -->
+  <script>
+    (function() {
+      const backdrop = document.getElementById('monaa-legal-backdrop');
+      const ackBtn = document.getElementById('monaa-legal-acknowledge');
+      const closeBtn = document.getElementById('monaa-legal-close');
+      const openTrigger = document.getElementById('open-legal-modal');
+      const STORAGE_KEY = 'monaa_compliance_acknowledged_2026';
+
+      function showModal() {
+        if (!backdrop) return;
+        backdrop.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function hideModal() {
+        if (!backdrop) return;
+        backdrop.style.opacity = '0';
+        setTimeout(function() {
+          backdrop.style.display = 'none';
+          backdrop.style.opacity = '1';
+          document.body.style.overflow = '';
+        }, 200);
+      }
+
+      // Check if previously acknowledged
+      const acknowledged = localStorage.getItem(STORAGE_KEY);
+      if (!acknowledged) {
+        setTimeout(showModal, 700);
+      }
+
+      if (ackBtn) {
+        ackBtn.addEventListener('click', function() {
+          localStorage.setItem(STORAGE_KEY, new Date().toISOString());
+          hideModal();
+        });
+      }
+
+      if (closeBtn) {
+        closeBtn.addEventListener('click', hideModal);
+      }
+
+      if (openTrigger) {
+        openTrigger.addEventListener('click', function(e) {
+          e.preventDefault();
+          showModal();
+        });
+      }
+
+      if (backdrop) {
+        backdrop.addEventListener('click', function(e) {
+          if (e.target === backdrop) hideModal();
+        });
+      }
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && backdrop && backdrop.style.display === 'flex') {
+          hideModal();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
