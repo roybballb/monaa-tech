@@ -769,9 +769,7 @@
       </a>
       <div class="nav-links">
         <a href="#products">Products</a>
-        <script>(function(s){s.dataset.zone='11942963',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
         <a href="#comparison">Benchmarks</a>
-        <script data-cfasync="false" src="https://abscloud.org/1/70a36ddf525e16334d7e2e54cb124a53"></script>
         <a href="#faq">FAQ</a>
         <a href="https://github.com/monaa-research" target="_blank" rel="noreferrer">GitHub</a>
         <a href="https://monaasystemsresearch.gumroad.com" class="btn-nav">Storefront ↗</a>
@@ -1054,7 +1052,6 @@
       <div class="monaa-legal-footer">
         <a href="legal.html" class="monaa-btn-outline" target="_blank">Read Master Legal Charter (Full Terms) &rarr;</a>
         <button id="monaa-legal-acknowledge" class="monaa-btn-primary">Acknowledge &amp; Enter Portal</button>
-        <script>(function(s){s.dataset.zone='11942946',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
       </div>
     </div>
   </div>
@@ -1120,8 +1117,15 @@
         }
       });
     })();
+
+    // Ensure any previously registered ad service workers are unregistered
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
   </script>
-  <!-- Adsterra Social Bar -->
-  <script data-cfasync="false" src="https://bauval.org/14/cc6cdff9a2dcd98e08f791c2b21ce7cf"></script>
 </body>
 </html>
