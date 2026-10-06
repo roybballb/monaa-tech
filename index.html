@@ -105,6 +105,18 @@
       },
       {
         "@type": "SoftwareApplication",
+        "name": "The AI Humanizer",
+        "operatingSystem": "Web Application (Cross-platform)",
+        "applicationCategory": "EducationalApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0.00",
+          "priceCurrency": "USD",
+          "url": "https://theaihumanizer.app/"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
         "name": "MONAA OFI-R",
         "operatingSystem": "Linux, macOS, Windows",
         "applicationCategory": "FinanceApplication",
@@ -246,6 +258,125 @@
       transition: opacity 0.2s;
     }
     .btn-nav:hover { opacity: 0.9; }
+
+    .btn-nav-humanizer {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(56, 189, 248, 0.18) 100%);
+      color: #38bdf8 !important;
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.2);
+      white-space: nowrap;
+    }
+    .btn-nav-humanizer:hover {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.28) 0%, rgba(56, 189, 248, 0.3) 100%);
+      border-color: #38bdf8;
+      color: #ffffff !important;
+      box-shadow: 0 0 22px rgba(56, 189, 248, 0.45);
+      transform: translateY(-1px);
+    }
+    .btn-pulse-dot {
+      width: 7px;
+      height: 7px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulseAnim 2s infinite;
+      flex-shrink: 0;
+    }
+
+    /* Live 1st Product Top Banner */
+    .live-product-banner {
+      background: linear-gradient(90deg, #071520 0%, #0d2235 50%, #081d1c 100%);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+      position: relative;
+      z-index: 101;
+      padding: 10px 0;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    .banner-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .banner-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .banner-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .banner-text {
+      font-size: 13.5px;
+      color: #e2e8f0;
+      line-height: 1.4;
+    }
+    .banner-text strong {
+      color: #38bdf8;
+      font-weight: 700;
+    }
+    .banner-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .banner-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      padding: 6px 15px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 12.5px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+      white-space: nowrap;
+    }
+    .banner-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 18px rgba(16, 185, 129, 0.55);
+      filter: brightness(1.1);
+    }
+    .banner-dismiss {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 3px 6px;
+      border-radius: 4px;
+      transition: color 0.15s;
+    }
+    .banner-dismiss:hover {
+      color: #ffffff;
+    }
 
     /* Hero Section */
     .hero {
@@ -743,7 +874,45 @@
       box-shadow: 0 6px 20px rgba(0, 240, 255, 0.35);
     }
 
+    @media (max-width: 880px) {
+      .banner-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+      }
+      .banner-content {
+        justify-content: center;
+      }
+      .banner-actions {
+        justify-content: center;
+      }
+      .nav-wrap {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .nav-links {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+    }
+
     @media (max-width: 640px) {
+      .nav-wrap {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px 0;
+      }
+      .nav-links {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+      .btn-nav, .btn-nav-humanizer {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
       .monaa-legal-grid {
         grid-template-columns: 1fr;
       }
@@ -760,6 +929,24 @@
 </head>
 <body>
 
+  <!-- Top Live Product Announcement Banner -->
+  <aside id="monaa-live-banner" class="live-product-banner" aria-label="1st Product Live Announcement">
+    <div class="container banner-inner">
+      <div class="banner-content">
+        <span class="banner-pill"><span class="pulse-dot"></span> 1ST PRODUCT LIVE</span>
+        <span class="banner-text">
+          Test our 1st production engine live: <strong>The AI Humanizer</strong> is officially online with air-gapped citation shielding &amp; real-time Turnitin avoidance!
+        </span>
+      </div>
+      <div class="banner-actions">
+        <a href="https://theaihumanizer.app/" target="_blank" rel="noopener noreferrer" class="banner-cta">
+          Test 1st Product Live <span>&rarr;</span>
+        </a>
+        <button id="monaa-banner-close" class="banner-dismiss" aria-label="Close Announcement">&times;</button>
+      </div>
+    </div>
+  </aside>
+
   <!-- Header -->
   <header>
     <div class="container nav-wrap">
@@ -772,6 +959,10 @@
         <a href="#comparison">Benchmarks</a>
         <a href="#faq">FAQ</a>
         <a href="https://github.com/monaa-research" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://theaihumanizer.app/" target="_blank" rel="noopener noreferrer" class="btn-nav-humanizer">
+          <span class="btn-pulse-dot"></span>
+          <span>AI Humanizer Live ↗</span>
+        </a>
         <a href="https://monaasystemsresearch.gumroad.com" class="btn-nav">Storefront ↗</a>
       </div>
     </div>
@@ -1116,6 +1307,20 @@
           hideModal();
         }
       });
+
+      // Live Product Banner Dismiss Handler
+      const liveBanner = document.getElementById('monaa-live-banner');
+      const bannerClose = document.getElementById('monaa-banner-close');
+      const BANNER_STORAGE_KEY = 'monaa_product1_banner_dismissed_v1';
+      if (liveBanner && bannerClose) {
+        if (localStorage.getItem(BANNER_STORAGE_KEY) === '1') {
+          liveBanner.style.display = 'none';
+        }
+        bannerClose.addEventListener('click', function() {
+          liveBanner.style.display = 'none';
+          localStorage.setItem(BANNER_STORAGE_KEY, '1');
+        });
+      }
     })();
 
     // Ensure any previously registered ad service workers are unregistered
