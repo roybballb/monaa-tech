@@ -756,16 +756,6 @@
         width: 100%;
       }
     }
-
-    /* Adsterra Social Bar: Enforce Left-Side Positioning */
-    [class*="sbar"], [id*="sbar"],
-    div[style*="position: fixed"][style*="right:"],
-    div[style*="position:fixed"][style*="right:"],
-    div[style*="position: fixed"][style*="right :"],
-    div[style*="position:fixed"][style*="right :"] {
-      left: 16px !important;
-      right: auto !important;
-    }
   </style>
 </head>
 <body>
@@ -780,10 +770,8 @@
       <div class="nav-links">
         <a href="#products">Products</a>
         <a href="#comparison">Benchmarks</a>
-        <script>(function(s){s.dataset.zone='11942946',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
         <a href="#faq">FAQ</a>
         <a href="https://github.com/monaa-research" target="_blank" rel="noreferrer">GitHub</a>
-        <script data-cfasync="false" src="https://abscloud.org/1/70a36ddf525e16334d7e2e54cb124a53"></script>
         <a href="https://monaasystemsresearch.gumroad.com" class="btn-nav">Storefront ↗</a>
       </div>
     </div>
@@ -1076,16 +1064,6 @@
       const closeBtn = document.getElementById('monaa-legal-close');
       const openTrigger = document.getElementById('open-legal-modal');
       const STORAGE_KEY = 'monaa_compliance_acknowledged_2026';
-      let socialBarLoaded = false;
-
-      function loadSocialBar() {
-        if (socialBarLoaded) return;
-        socialBarLoaded = true;
-        const s = document.createElement('script');
-        s.setAttribute('data-cfasync', 'false');
-        s.src = 'https://bauval.org/14/cc6cdff9a2dcd98e08f791c2b21ce7cf';
-        document.body.appendChild(s);
-      }
 
       function showModal() {
         if (!backdrop) return;
@@ -1100,8 +1078,6 @@
           backdrop.style.display = 'none';
           backdrop.style.opacity = '1';
           document.body.style.overflow = '';
-          // Social bar appears on the left side strictly AFTER acknowledgement form disappears
-          loadSocialBar();
         }, 200);
       }
 
@@ -1109,38 +1085,29 @@
       const acknowledged = localStorage.getItem(STORAGE_KEY);
       if (!acknowledged) {
         setTimeout(showModal, 700);
-      } else {
-        // Acknowledgement form already dismissed in prior visit; load social bar
-        loadSocialBar();
-      }
-
-      // Strictly isolate compliance modal clicks so Acknowledge and legal charter never trigger popunders
-      if (backdrop) {
-        backdrop.addEventListener('click', function(e) {
-          e.stopPropagation();
-          if (e.target === backdrop) hideModal();
-        }, true);
       }
 
       if (ackBtn) {
-        ackBtn.addEventListener('click', function(e) {
-          e.stopPropagation();
+        ackBtn.addEventListener('click', function() {
           localStorage.setItem(STORAGE_KEY, new Date().toISOString());
           hideModal();
-        }, true);
+        });
       }
 
       if (closeBtn) {
-        closeBtn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          hideModal();
-        }, true);
+        closeBtn.addEventListener('click', hideModal);
       }
 
       if (openTrigger) {
         openTrigger.addEventListener('click', function(e) {
           e.preventDefault();
           showModal();
+        });
+      }
+
+      if (backdrop) {
+        backdrop.addEventListener('click', function(e) {
+          if (e.target === backdrop) hideModal();
         });
       }
 
