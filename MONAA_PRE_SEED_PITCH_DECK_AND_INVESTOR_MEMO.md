@@ -9,7 +9,7 @@
 **Audited Track Record:** +532.69% Return on Capital Base (₹55k Crucible), 7.30 Profit Factor, +₹341,985 Sentry Gate Delta  
 **Date:** October 2026  
 **Corporate Entity:** Monaa Systems and Research Inc. (Delaware C-Corp)  
-**Founding Governance:** Aniruddha Roy (CEO & Core Architect, KIIT IP Hons LLB, WBNUJS LLM Candidate), Srishti (Chief Governance Officer), Sneha (Chief Financial Officer, KIIT Taxation Hons LLB Gold Medalist), Nandini (Chief Operating Officer)  
+**Founding Governance:** Aniruddha Roy (CEO & Core Architect, KIIT IP Hons LLB, WBNUJS LLM Candidate)  
 
 ---
 
