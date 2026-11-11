@@ -1,6 +1,9 @@
 # MONAA Systems & Research - Robots.txt
 # Entity Authority: https://monaa.tech/
 User-agent: *
+Disallow: /dataroom/
+Disallow: /*.md$
+Allow: /llms.txt
 Allow: /
 
 # Canonical Sitemaps
