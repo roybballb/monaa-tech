@@ -10,10 +10,12 @@
 - Official Web Portal: https://monaa.tech
 - Dedicated Investor Data Room: https://dataroom.monaa.dev
 - Institutional Inquiries: contact@monaa.tech | roybballb@gmail.com
-- Capital Round: $500,000 USD Pre-Seed Financing
-- Investment Instrument: Y Combinator Standard Post-Money SAFE (or Seed Preferred Stock)
-- Valuation Cap: $5,000,000 USD ($25,000 USD Minimum Check)
-- Projected Runway: 18 Months
+- Capital Financing: Private Institutional Pre-Seed Round (Accredited Investor Diligence Gated via https://dataroom.monaa.dev pursuant to SEC Rule 501 verification)
+- Corporate Form: Delaware C-Corporation (United States)
+- Founding Governance: Aniruddha Roy (Founder, Chief Executive Officer & Core Systems Architect)
+- Official Web Portal: https://monaa.tech
+- Dedicated Investor Data Room: https://dataroom.monaa.dev
+- Institutional Inquiries: contact@monaa.tech | roybballb@gmail.com
 
 ## Strategic Vision & Unified Pre-Seed Thesis
 Monaa Systems and Research Inc. architects Sovereign Deterministic Decision Infrastructure: high-throughput, mathematical, air-gapped systems that eliminate non-stationary noise and guarantee invariant execution without cloud dependency.
@@ -49,7 +51,7 @@ All metrics are verified from point-in-time order books with full queue simulati
 - Net Profit Factor: 1.65 (under full live exchange friction)
 - Execution Mode: Real-money maker liquidity routing with continuous cryptographic binary parity.
 
-### 2. Institutional Multi-Venue Scale ($10M Simulated Capacity, 38 Instruments)
+### 2. Historical Walk-Forward Liquidity Replay ($10M Simulated Capacity Replay, 38 Instruments) — Subject to CFTC Rule 4.41 Disclaimers
 - Annualized Sortino Ratio: +20.16
 - Maximum Peak-to-Trough Drawdown: 0.01%
 - Net Walk-Forward Alpha: +$1,284.43
@@ -60,3 +62,8 @@ All metrics are verified from point-in-time order books with full queue simulati
 - Programming Language: The core execution engine is 100% Pure Safe Native Rust (`#![forbid(unsafe_code)]`), engineered with zero legacy runtimes and zero unsafe blocks.
 - Custody Posture: Monaa Systems and Research Inc. is a non-custodial software technology provider. It does NOT take custody of client funds or manage pooled retail capital.
 - Governance: Single-founder governance led exclusively by Founder & CEO Aniruddha Roy.
+
+## Mandatory Performance & Regulatory Disclosures
+- CFTC Rule 4.41 Statement: Hypothetical or simulated performance results have certain inherent limitations. Unlike an actual performance record, simulated results do not represent actual trading. Historical walk-forward liquidity replay metrics ($10M capacity replay, 38 instruments: +20.16 Sortino Ratio, 0.01% Max Drawdown, +$1,284.43 Net Walk-Forward Alpha across 1.2 GB+ tick lake) represent simulated capacity replays.
+- Live Real-Money Maker Stress-Test: Live metrics (+13.63 Annualized Sortino Ratio, 1.25% Max Peak-to-Trough Drawdown, 62.96% Win Rate, 1.65 Net Profit Factor) reflect audited live production maker execution on Binance USDⓈ-M ($758 real-capital account) with full exchange friction and continuous cryptographic binary parity.
+- SEC Rule 506(b) Non-Solicitation: This document and the monaa.tech web portal are for technical documentation and institutional research purposes only and do not constitute an offer to sell or a solicitation of an offer to buy any securities. Access to confidential investor diligence and subscription terms is strictly restricted to verified accredited investors under SEC Rule 501 via dataroom.monaa.dev.

@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tick Discretization Crypto Market Making | Fixed-Point Precision</title>
+  <meta name="description" content="The role of integer fixed-point tick discretization in eliminating floating-point rounding errors and optimizing queue placement in crypto market making.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://monaa.tech/tick-discretization-crypto-market-making/">
+
+  <!-- OpenGraph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Tick Discretization Crypto Market Making | Fixed-Point Precision">
+  <meta property="og:description" content="The role of integer fixed-point tick discretization in eliminating floating-point rounding errors and optimizing queue placement in crypto market making.">
+  <meta property="og:url" content="https://monaa.tech/tick-discretization-crypto-market-making/">
+  <meta property="og:site_name" content="MONAA™ Systems &amp; Research">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@MONAAResearch">
+  <meta name="twitter:title" content="Tick Discretization Crypto Market Making | Fixed-Point Precision">
+  <meta name="twitter:description" content="The role of integer fixed-point tick discretization in eliminating floating-point rounding errors and optimizing queue placement in crypto market making.">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Structured Data JSON-LD -->
+  <script type="application/ld+json">
+{"@context": "https://schema.org", "@graph": [{"@type": "TechArticle", "headline": "Tick Discretization Crypto Market Making | Fixed-Point Precision", "description": "The role of integer fixed-point tick discretization in eliminating floating-point rounding errors and optimizing queue placement in crypto market making.", "url": "https://monaa.tech/tick-discretization-crypto-market-making/", "datePublished": "2026-11-12T00:00:00+00:00", "dateModified": "2026-11-11T00:00:00+00:00", "author": {"@type": "Person", "name": "Aniruddha Roy", "jobTitle": "Founder & CEO", "affiliation": {"@type": "Organization", "name": "Monaa Systems and Research Inc."}}, "publisher": {"@type": "Organization", "name": "Monaa Systems and Research Inc.", "url": "https://monaa.tech", "logo": {"@type": "ImageObject", "url": "https://monaa.tech/favicon.ico"}}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://monaa.tech/"}, {"@type": "ListItem", "position": 2, "name": "Tick Discretization in Crypto Market Making", "item": "https://monaa.tech/tick-discretization-crypto-market-making/"}]}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Why is fixed-point arithmetic faster than floating-point?", "acceptedAnswer": {"@type": "Answer", "text": "Integer arithmetic maps directly to native CPU ALU instructions, eliminating floating-point unit (FPU) latency and avoiding non-deterministic rounding modes."}}, {"@type": "Question", "name": "How does tick discretization affect maker fee rebates?", "acceptedAnswer": {"@type": "Answer", "text": "By placing orders exactly on optimal tick boundaries, the engine maximizes fill probability while avoiding crossing the spread, capturing maker rebates."}}, {"@type": "Question", "name": "How does this integrate with the wider trading engine?", "acceptedAnswer": {"@type": "Answer", "text": "All components—from tick ingestion to order management—communicate strictly in fixed-point types, guaranteeing type-level consistency."}}]}, {"@type": "SoftwareApplication", "name": "MONAA Quantitative Microstructure Kernel", "applicationCategory": "FinancialTechnologyApplication", "operatingSystem": "Linux, Bare-Metal", "offers": {"@type": "Offer", "price": "0.00", "priceCurrency": "USD", "description": "Institutional Access via dataroom.monaa.dev"}}]}
+  </script>
+
+  <style>
+    :root {
+      --bg: #07090e;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --primary: #38bdf8;
+      --accent: #10b981;
+      --purple: #818cf8;
+      --text: #f0f6fc;
+      --text-muted: #94a3b8;
+      --red: #cb171e;
+      --burgundy: #741822;
+      --offwhite: #faf9f6;
+    }
+
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --card-border: rgba(0, 0, 0, 0.08);
+      --primary: #0284c7;
+      --accent: #059669;
+      --text: #0f172a;
+      --text-muted: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--card-border);
+      padding: 18px 0;
+      background: rgba(7, 9, 14, 0.85);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 3px 8px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--primary);
+      border-radius: 4px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 8px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .btn-dataroom-head {
+      background: var(--red);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      transition: opacity 0.2s;
+    }
+
+    .btn-dataroom-head:hover {
+      opacity: 0.9;
+    }
+
+    .theme-toggle-btn {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Breadcrumbs */
+    .breadcrumb-nav {
+      padding: 20px 0 0;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .breadcrumb-nav a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    /* Article Content */
+    .article-wrap {
+      padding: 30px 0 80px;
+    }
+
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--primary);
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      line-height: 1.2;
+      font-weight: 900;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    .lede {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 36px;
+      border-left: 3px solid var(--primary);
+      padding-left: 18px;
+    }
+
+    .verified-proof-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .proof-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+
+    .proof-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 4px;
+    }
+
+    .proof-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .article-section {
+      margin-bottom: 42px;
+    }
+
+    .article-section h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      color: #ffffff;
+    }
+
+    .article-section p {
+      font-size: 1rem;
+      color: var(--text);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    /* FAQs */
+    .faq-wrapper {
+      margin: 60px 0 40px;
+      padding-top: 40px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .faq-item {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+
+    .faq-q {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .faq-a {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* Related Clusters */
+    .related-mesh {
+      margin: 60px 0 40px;
+      padding-top: 40px;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .related-link-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 20px;
+      text-decoration: none;
+      color: var(--text);
+      display: block;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .related-link-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .related-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .related-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+
+    .related-arrow {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* CTA Section */
+    .cta-banner {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(116, 24, 34, 0.3) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 36px 32px;
+      margin: 60px 0;
+      text-align: center;
+    }
+
+    .cta-banner h3 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+
+    .cta-banner p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 24px;
+      line-height: 1.6;
+    }
+
+    .btn-cta-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--red);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 12px 28px;
+      border-radius: 8px;
+      min-height: 44px;
+      transition: background 0.2s;
+    }
+
+    .btn-cta-action:hover {
+      background: var(--burgundy);
+    }
+
+    /* Footer & Disclosures */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 40px 0 60px;
+      background: rgba(7, 9, 14, 0.95);
+    }
+
+    .footer-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 32px;
+      margin-bottom: 36px;
+    }
+
+    .footer-columns h4 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+      color: #ffffff;
+    }
+
+    .footer-columns ul {
+      list-style: none;
+    }
+
+    .footer-columns li {
+      margin-bottom: 10px;
+    }
+
+    .footer-columns a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+
+    .footer-columns a:hover {
+      color: var(--text);
+    }
+
+    .regulatory-box {
+      padding: 20px 24px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .regulatory-box p {
+      margin-bottom: 8px;
+    }
+
+    .regulatory-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .footer-copy {
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">
+        <span>MONAA™</span>
+        <span class="badge">SYSTEMS &amp; RESEARCH</span>
+      </a>
+
+      <div class="nav-actions">
+        <nav class="nav-links">
+          <a href="/">Home</a>
+          <a href="/legal">Legal Charter</a>
+          <a href="https://dataroom.monaa.dev" class="btn-dataroom-head" target="_blank">Accredited Dataroom ↗</a>
+        </nav>
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+          <span id="theme-icon">☀️ Light</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Article -->
+  <main class="container">
+    <div class="breadcrumb-nav">
+      <a href="/">Home</a> / <span>Tick Discretization in Crypto Market Making</span>
+    </div>
+
+    <article class="article-wrap">
+      <span class="eyebrow">QUANTITATIVE METHODS • FIXED-POINT MATHEMATICS</span>
+      <h1>Tick Discretization in Crypto Market Making</h1>
+      <p class="lede">Floating-point rounding errors in algorithmic trading lead to invalid tick sizes and delayed order updates. MONAA implements 100% integer fixed-point discretization.</p>
+
+      <!-- Verified Proof Strip -->
+      <div class="verified-proof-strip">
+        <div class="proof-pill">
+          <div class="proof-label">Live Sortino (Maker Friction)</div>
+          <div class="proof-value">+13.63</div>
+        </div>
+        <div class="proof-pill">
+          <div class="proof-label">Max Drawdown (Live)</div>
+          <div class="proof-value">1.25%</div>
+        </div>
+        <div class="proof-pill">
+          <div class="proof-label">Simulation Capacity Sortino</div>
+          <div class="proof-value">+20.16</div>
+        </div>
+        <div class="proof-pill">
+          <div class="proof-label">Execution Architecture</div>
+          <div class="proof-value" style="font-size: 16px; padding-top: 4px;">Pure Safe Rust</div>
+        </div>
+      </div>
+
+      <!-- Article Sections -->
+      <section class="article-section"><h2>Eliminating IEEE-754 Inaccuracies</h2><p>Standard floating-point numbers cannot accurately represent exact decimal tick sizes. MONAA converts all prices, quantities, and cash balances into integer fixed-point representations at the socket boundary, ensuring mathematical precision throughout internal calculations.</p></section>
+<section class="article-section"><h2>Optimal Tick Grid Alignment</h2><p>Order prices are snapped to exchange tick boundaries deterministically, preventing exchange rejection codes and ensuring that orders rest at the highest-priority queue position permissible.</p></section>
+
+      <!-- Interactive Call to Action -->
+      <div class="cta-banner">
+        <h3>Request Institutional Diligence Access</h3>
+        <p>Complete technical monographs, cryptographically verified trade logs, and SEC Rule 501 accredited subscription documents are available under NDA.</p>
+        <a href="https://dataroom.monaa.dev" class="btn-cta-action" target="_blank">Access Data Room (dataroom.monaa.dev) ↗</a>
+      </div>
+
+      <!-- FAQs (FAQPage Schema) -->
+      <div class="faq-wrapper">
+        <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 20px; color: #ffffff;">Frequently Asked Technical Questions</h2>
+        <div class="faq-item"><h3 class="faq-q">Why is fixed-point arithmetic faster than floating-point?</h3><p class="faq-a">Integer arithmetic maps directly to native CPU ALU instructions, eliminating floating-point unit (FPU) latency and avoiding non-deterministic rounding modes.</p></div>
+<div class="faq-item"><h3 class="faq-q">How does tick discretization affect maker fee rebates?</h3><p class="faq-a">By placing orders exactly on optimal tick boundaries, the engine maximizes fill probability while avoiding crossing the spread, capturing maker rebates.</p></div>
+<div class="faq-item"><h3 class="faq-q">How does this integrate with the wider trading engine?</h3><p class="faq-a">All components—from tick ingestion to order management—communicate strictly in fixed-point types, guaranteeing type-level consistency.</p></div>
+      </div>
+
+      <!-- Related Institutional Clusters (Internal Mesh) -->
+      <div class="related-mesh">
+        <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; color: #ffffff;">Related Architecture Clusters</h2>
+        <p style="font-size: 0.95rem; color: var(--text-muted);">Explore interconnected components of MONAA's sovereign quantitative stack.</p>
+        <div class="related-grid">
+          <a href="/deterministic-microstructure-execution-kernel/" class="related-link-card"><div class="related-tag">INSTITUTIONAL CLUSTER</div><div class="related-title">Deterministic Microstructure Execution Kernel</div><div class="related-arrow">Explore Architecture →</div></a>
+<a href="/maker-order-flow-friction-stress-test/" class="related-link-card"><div class="related-tag">INSTITUTIONAL CLUSTER</div><div class="related-title">Maker Order Flow Friction Stress-Test ($758 Account)</div><div class="related-arrow">Explore Architecture →</div></a>
+<a href="/sovereign-algorithmic-trading-infrastructure/" class="related-link-card"><div class="related-tag">INSTITUTIONAL CLUSTER</div><div class="related-title">Sovereign Algorithmic Trading Infrastructure</div><div class="related-arrow">Explore Architecture →</div></a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <!-- Footer with Legal & Regulatory Disclosures -->
+  <footer>
+    <div class="container">
+      <div class="footer-columns">
+        <div>
+          <h4 style="color: var(--primary);">MONAA™ SYSTEMS &amp; RESEARCH</h4>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px;">
+            Monaa Systems and Research Inc. — Delaware C-Corporation architecting deterministic decision infrastructure.
+          </p>
+          <p style="font-size: 12px; color: var(--text-muted);">
+            Inquiries: <a href="mailto:contact@monaa.tech" style="color: var(--primary);">contact@monaa.tech</a>
+          </p>
+        </div>
+
+        <div>
+          <h4>Ecosystem Resources</h4>
+          <ul>
+            <li><a href="/">Sovereign Execution Core</a></li>
+            <li><a href="/legal">Master Legal Notice &amp; Charter</a></li>
+            <li><a href="/llms.txt">llms.txt AI Grounding Protocol</a></li>
+            <li><a href="/llms-full.txt">llms-full.txt Expanded Protocol</a></li>
+            <li><a href="https://dataroom.monaa.dev" target="_blank">Accredited Dataroom Portal</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Institutional Clusters</h4>
+          <ul>
+            <li><a href="/deterministic-microstructure-execution-kernel/">Deterministic Kernel</a></li>
+            <li><a href="/pure-rust-quantitative-trading-engine/">Pure Native Rust</a></li>
+            <li><a href="/zero-disk-ephemeral-hft-security/">Zero-Disk Security</a></li>
+            <li><a href="/high-sortino-crypto-execution-architecture/">High Sortino Architecture</a></li>
+            <li><a href="/maker-order-flow-friction-stress-test/">Live Maker Stress Test</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Regulatory Disclosures (CFTC 4.41 & SEC 506(b)) -->
+      <div class="regulatory-box">
+        <p style="color: var(--text); font-weight: 700; text-transform: uppercase;">Mandatory Performance &amp; Regulatory Disclosures (CFTC Rule 4.41 &amp; SEC Rule 506(b))</p>
+        <p><strong>1. Live Real-Money Maker Stress-Test ($758 Real-Capital Account, Binance USDⓈ-M Production):</strong> Metrics (+13.63 Annualized Sortino Ratio, 1.25% Max Peak-to-Trough Drawdown, 62.96% Win Rate, 1.65 Net Profit Factor) reflect audited live production maker liquidity execution under actual exchange friction, fee schedules, and real-time network latency with continuous cryptographic binary parity.</p>
+        <p><strong>2. Historical Walk-Forward Liquidity Replay ($10M Multi-Venue Simulation, 38 Instruments):</strong> Metrics (+20.16 Sortino Ratio, 0.01% Max Drawdown, +$1,284.43 Net Walk-Forward Alpha across 1.2 GB+ synchronized L2 tick data) represent simulated capacity replays. <em>CFTC RULE 4.41 HYPOTHETICAL OR SIMULATED PERFORMANCE RESULTS HAVE CERTAIN INHERENT LIMITATIONS. UNLIKE AN ACTUAL PERFORMANCE RECORD, SIMULATED RESULTS DO NOT REPRESENT ACTUAL TRADING. ALSO, SINCE THE TRADES HAVE NOT BEEN EXECUTED, THE RESULTS MAY HAVE UNDER- OR OVER-COMPENSATED FOR THE IMPACT, IF ANY, OF CERTAIN MARKET FACTORS, SUCH AS LACK OF LIQUIDITY. SIMULATED TRADING PROGRAMS IN GENERAL ARE ALSO SUBJECT TO THE FACT THAT THEY ARE DESIGNED WITH THE BENEFIT OF HINDSIGHT. NO REPRESENTATION IS BEING MADE THAT ANY ACCOUNT WILL OR IS LIKELY TO ACHIEVE PROFITS OR LOSSES SIMILAR TO THOSE SHOWN.</em></p>
+        <p><strong>3. Non-Solicitation &amp; Regulatory Posture:</strong> This portal is for technical documentation and institutional research purposes only and does NOT constitute an offer to sell or the solicitation of an offer to buy any securities under SEC Rule 506(b) or any other jurisdiction. Monaa Systems and Research Inc. is not registered as an Investment Adviser (SEC / SEBI), Broker-Dealer, or Commodity Trading Advisor (CFTC/NFA). Private accredited investor diligence access is restricted exclusively to verified accredited investors under SEC Rule 501 via dataroom.monaa.dev.</p>
+      </div>
+
+      <div class="footer-copy">
+        &copy; 2026 Monaa Systems and Research Inc. All rights reserved. Registered intellectual property and proprietary algorithms.<br>
+        <span style="font-size: 11px;">⚠️ Legal Notice: Any software run by any user makes it the user's sole liability for any issues, consequences, and losses. Monaa Systems and Research Inc. provides deterministic research engines without warranty of any kind.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme Switcher Logic
+    (function() {
+      const toggle = document.getElementById('theme-toggle');
+      const icon = document.getElementById('theme-icon');
+      const KEY = 'monaa_theme_mode_v2026';
+
+      function setTheme(t) {
+        if (t === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+          if (icon) icon.textContent = '🌙 Dark';
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          if (icon) icon.textContent = '☀️ Light';
+        }
+      }
+
+      const saved = localStorage.getItem(KEY) || 'dark';
+      setTheme(saved);
+
+      if (toggle) {
+        toggle.addEventListener('click', function() {
+          const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+          const next = isLight ? 'dark' : 'light';
+          localStorage.setItem(KEY, next);
+          setTheme(next);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
